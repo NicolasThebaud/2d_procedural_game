@@ -14,11 +14,10 @@ Informations techniques:
 
 
 
-- Scope I -
-Génération du Monde
+# Scope I - Génération du Monde
 
 
-1. Génération d'un Chunk unique
+- 1. Génération d'un Chunk unique
 acceptance; le chunk:
 > est carré, d'une taille paramétrable
 > est généré aléatoirement
@@ -41,22 +40,28 @@ un autre algorithme pourrait résulter en une ligne différente, e.g.
 > possibles algorithmes à étudier: Interpolation bilinéaire, Bruit de Perlin
 
 
-2. Gestion de voisinnage
+- 2. Gestion de voisinnage
 acceptance:
 > le monde est composé de X Chunks (nombre paramétrable)
 > les chunks sont générés de manière à ce que deux chunks adjacents soit "voisins" en terme d'altitude; e.g.
 
 [1, 2, 3] | [1, 2, 3]   // Génération KO
+
 [2, 3, 4] | [1, 2, 3]   // trop de différence entre les deux côtés
+
 [3, 4, 5] | [1, 3, 4]
 
+---------------------------------------------------------------
 
 [1, 2, 3] | [3, 3, 3]   // Génération OK
+
 [2, 3, 4] | [3, 4, 4]   // les deux côtés sont proches (+/- 1 différence d'altitude)
+
 [3, 4, 5] | [5, 4, 4]
 
 
-3. Génération infinie
+
+- 3. Génération infinie
 acceptance:
 > permettre l'ajout post-génération d'une nouvelle ligne/colonne de Chunk (via une bouton sur la page HMTL)
 /!\ les canvas HTML ont une taille prédéfinie
