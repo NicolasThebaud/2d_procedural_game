@@ -6,7 +6,7 @@ Informations générales:
 > Sa génération est procédurale
 > Le Monde est divisé en *Chunks*, des subdivisions carrées du monde
 > Chaque Chunk est lui-même divisés en Tiles (ie. pixel), ayant une couleur correspondant à leur "altitude"
-> Chaque Chunk est aligné avec ses voisins (i.e. l'altitude des côtés adjacents sont identiques ou proches)
+> Chaque Chunk est aligné avec ses voisins (i.e. l'altitude des côtés adjacents sont identiques)
 > (wip)
 
 Informations techniques:
@@ -55,9 +55,11 @@ acceptance:
 
 [1, 2, 3] | [3, 3, 3]   // Génération OK
 
-[2, 3, 4] | [3, 4, 4]   // les deux côtés sont proches (+/- 1 différence d'altitude)
+[2, 3, 4] | [4, 4, 4]   // les deux côtés sont egaux
 
 [3, 4, 5] | [5, 4, 4]
+
+note: permettre aux chunks d'avoir des coordonnées inégales (ex: [..., 5] | [4, ...]) génère des résultats moins réalistes
 
 
 
