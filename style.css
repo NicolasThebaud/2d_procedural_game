@@ -1,0 +1,22 @@
+body {
+    font-family: Tahoma;
+    font-weight: normal !important;
+    overflow: hidden;
+}
+
+#content {
+    position: absolute;
+    top: 0;
+    left: 75vw;
+    width: 24vw;
+    height: 100vh;
+    border: solid black;
+    border-width: 0 0 0 1px;
+    padding-left: 10px;
+}
+
+#demo {
+    position: relative;
+    margin-top: -94px;
+    margin-left: 133px;
+}
