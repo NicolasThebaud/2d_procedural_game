@@ -8,7 +8,6 @@ class Chunk {
       this.cells = [];
       this.steps = Array.apply(null, {length: size})
         .map((_, i) => i / (size - 1));
-    console.warn(">", this);
     }   
     
     initChunk() {

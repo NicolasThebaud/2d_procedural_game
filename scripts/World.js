@@ -8,8 +8,6 @@ class World {
         this.chunkSize = chunkSize
         this.chunks = Array.apply(null, { length: this.chunksX })
             .map(() => new Array(this.chunksY));
-
-        
     }
 
     generate() {
@@ -20,9 +18,9 @@ class World {
                 let jLookup = j > 0 ? this.chunks[i][j - 1] : null; // adjacent chunk (left)
                 
                 let mask = [ // take heightmap from neighbouring chunks if they exist
-                    jLookup ? jLookup.sw : (iLookup ? iLookup.ne : -1), // north-west is left chunk's nort-east, or top chunk's sw
-                    jLookup ? jLookup.se : -1,  // north-east is top's south-east
-                    iLookup ? iLookup.se : -1,
+                    jLookup ? jLookup.ne : (iLookup ? iLookup.sw : -1), // north-west is left chunk's nort-east, or top chunk's sw
+                    iLookup ? iLookup.se : -1,  // north-east is top's south-east
+                    jLookup ? jLookup.se : -1,
                     -1
                 ];
 

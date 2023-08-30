@@ -6,13 +6,19 @@ body {
 
 #content {
     position: absolute;
+    z-index: 10;
     top: 0;
     left: 75vw;
-    width: 24vw;
+    width: 25vw;
     height: 100vh;
+    background: white;
     border: solid black;
     border-width: 0 0 0 1px;
     padding-left: 10px;
+}
+
+#content>div {
+    width: 90%;
 }
 
 #demo {

@@ -16,35 +16,63 @@ const colors = [
     "#004400"
 ];
 
-const draw = function(chunkOffsets = [0, 0]) {
+const draw = function(chunkOffsets = 0) {
     const ctx = document.getElementById("world").getContext("2d");
     
     ctx.clearRect(0, 0, 3000, 3000);
     
-    for (let row in world.chunks) {
-        const rowData = world.chunks[row];
-        for (let chunk in rowData) {
-            for (let x in rowData[chunk].cells) {
-                const cellData = rowData[chunk].cells[x];
-                for (let y in cellData) {
-                    let offsetx = (world.chunkSize) * (chunk + chunkOffsets[0]) * tileSize;
-                    let offsety = (world.chunkSize) * (row + chunkOffsets[1]) * tileSize;
-                    ctx.fillStyle = colors[cellData[y] - 1];
-                    ctx.fillRect(offsety + tileSize * y, offsetx + tileSize * x, tileSize, tileSize);
+    for (let cRow = 0; cRow < world.chunksX; cRow++) {
+        const row = world.chunks[cRow];
+
+        for (let cIndex = 0; cIndex < row.length; cIndex++) {
+            const chunkData = row[cIndex].cells;
+
+            for(let tRow = 0; tRow < chunkData.length; tRow++) {
+                const tiles = chunkData[tRow];
+
+                for (let tIndex = 0; tIndex < tiles.length; tIndex++) {
+                    const tileHeight = tiles[tIndex];
+                    const chunkWidth = world.chunkSize * tileSize; // nb of tiles on a chunk's side * the rendering size of one tile
+                    const chunkOffsetX = chunkWidth * (cRow + chunkOffsets);
+                    const chunkOffsetY = chunkWidth * (cIndex + chunkOffsets);
+                    const tileOffsetX = tileSize * tRow; // offset within the chunk
+                    const tileOffsetY = tileSize * tIndex;
+
+                    ctx.fillStyle = colors[tileHeight - 1];
+                    ctx.fillRect(
+                        chunkOffsetY + tileOffsetY,
+                        chunkOffsetX + tileOffsetX,
+                        tileSize,
+                        tileSize
+                    );
                     
                     if (debugHeightmap) {
-                        ctx.fillStyle = ([0, 15].includes(+x) || [0, 15].includes(+y)) ? "#FFFFFF66" : "#00000066";
+                        ctx.fillStyle = ([0, 15].includes(+tRow) || [0, 15].includes(+tIndex)) ? "#FFFFFF66" : "#00000066";
                         ctx.font = "12px serif";
-                        ctx.fillText(world.chunks[row][chunk].cells[x][y], (offsety + tileSize * y), (offsetx + tileSize * x) + 12);
+                        ctx.fillText(tileHeight, chunkOffsetY + tileOffsetY, chunkOffsetX + tileOffsetX + 12);
                     }
                 }
             }
         }
     }
 }
+const drawDebuggingChunks = () => {
+    const canvasObj = document.getElementById("world");
+    const ctx = canvasObj.getContext("2d");
+    const expectedChunks = Math.ceil(canvasObj.width / chunkSize);
+    const totalWidth = chunkSize * tileSize;
+
+    for (let i = 0; i < expectedChunks; i++) {
+        for (let j = 0; j < expectedChunks; j++) {
+            ctx.fillStyle = "#BB252566";
+            ctx.strokeRect(i * totalWidth, j * totalWidth, totalWidth, totalWidth);
+        }
+    }
+}
 
 // instanciate a 1x1 16px Chunk world
-const world = new World(1, 1, 16);
+const chunkSize = 16;
+const world = new World(2, 2, chunkSize);
 
 world.generate();
 draw();
@@ -52,7 +80,8 @@ draw();
 
 
 
-
+// DEBUG
+drawDebuggingChunks();
 
 
 // DEMO
