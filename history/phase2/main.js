@@ -2,6 +2,9 @@ import World from "./scripts/World.js";
 import Chunk from "./scripts/Chunk.js";
 
 
+const canvasObj = document.getElementById("world");
+const ctx = canvasObj.getContext("2d");
+
 const debugHeightmap = false;
 const tileSize = 12;
 const colors = [
@@ -17,8 +20,6 @@ const colors = [
 ];
 
 const draw = function(chunkOffsets = 0) {
-    const ctx = document.getElementById("world").getContext("2d");
-    
     ctx.clearRect(0, 0, 3000, 3000);
     
     for (let cRow = 0; cRow < world.chunksX; cRow++) {
@@ -57,8 +58,6 @@ const draw = function(chunkOffsets = 0) {
     }
 }
 const drawDebuggingChunks = () => {
-    const canvasObj = document.getElementById("world");
-    const ctx = canvasObj.getContext("2d");
     const expectedChunks = Math.ceil(canvasObj.width / chunkSize);
     const totalWidth = chunkSize * tileSize;
 
@@ -76,12 +75,18 @@ const world = new World(2, 2, chunkSize);
 
 world.generate();
 draw();
+console.warn(world);
+console.warn(draw);
 
 
 
 
 // DEBUG
 drawDebuggingChunks();
+canvasObj.addEventListener("mousemove", (e) => {
+    console.warn(e.offsetX, e.offsetY);
+});
+
 
 
 // DEMO

@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <canvas id="world" height=3000 width=3000></canvas>
+
+
+        <div id="content">
+            <div id="chunk-gen">
+
+                <p><b>Chunk Generation</b></p>
+
+                <p><b>- generation algorithm -</b></p>
+                
+                <br><span>chunk starts as an empty array (e.g. with size=5)</span>
+                <br><span style="color: #2988ae"><b>[_, _, _, _, _]</b></span>
+                <br><br><br><br>
+                <span style="color: #006600"><b>step 1.</b>Generating random corners</span>
+                <br><span style="color: #2988ae"><b>[1, _, _, _, 4]</b></span>
+
+                <br><br><br><br>
+                <span style="color: #006600"><b>step 2.</b>Filling intermediate tiles</span>
+                <br><span>Each tile progresses steadily toward the opposite corner</span>
+                <br><span>In the example above, the "chunk" is <span style="color: #ffbf00">5</span> tiles wide,</span>
+                <span>meaning each tile is 1/<span style="color: #ffbf00">5</span> superior to its left neighbour</span>
+                <br><br><span style="color: #2988ae">-> <b>[1, <span style="color: #ffbf00">+0.25Δ, +0.50Δ, +0.75Δ</span>, 4]</b></span>
+                <br><span>This value is then multiplied by the difference between the two corners (4-1 = 3):</span>
+                <br><span style="color: #2988ae">-> <b>[1, <span style="color: #ffbf00">1.75, 2.5, 3.25</span>, 4]</b></span>
+                <br>Finally values are rounded to allow easier formatting
+                <br><span style="color: #2988ae">-> <b>[1, <span style="color: #4D2DB7">~2, ~3, ~3</span>, 4]</b></span>
+                <br><br><br><br>
+                <span style="color: #006600"><b>step 3.</b>Rendering the heightmap</span>
+                <br><span>The resulting array (called a "Heightmap") is formatted into color-coded tiles</span>
+                <br><span>The higher the integer, the higher the "altitude"</span>
+                <br><span>Low numbers would represente the ground (or water for example)</span>
+                <span>and higher numbers would be mountains (or plains above water)</span>
+
+                <br><br><br><br>
+                <span><b>2D example:</b></span>
+                <br>
+                <br><span style="color: #2988ae"><b>[2, <span style="color: #4D2DB7">4, 5, 7</span>, 8]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[4, 4, 5, 6, 7]</span></b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[5, 5, 5, 5, 6]</span></b></span><span>    -></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[7, 6, 5, 5, 5]</span></b></span>
+                <br><span style="color: #2988ae"><b>[8, <span style="color: #4D2DB7">7, 6, 5</span>, 5]</b></span>
+                <br><canvas id="demo" width=150 height=150></canvas>
+            </div>
+            <a href="/history/phase2/index.html">go to phase II ></a>
+        </div>
+
+
+        <script type="module" src="main.js"></script>
+    </body>
+</html>

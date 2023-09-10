@@ -38,6 +38,45 @@ class World {
     rng() {
         return ~~(Math.random() * 9) + 1;
     }
+
+    genExtraXChunk() {
+        const newColumn = [];
+        const prevColumn = this.chunks[this.chunksX - 1]; // last row
+        
+        for (const i in prevColumn) {
+            const chunk = prevColumn[i];
+            const northEast = newColumn.length ? newColumn[newColumn.length - 1].se : this.rng();
+            const newC = new Chunk(chunk.ne, northEast, chunk.se, this.rng(), this.chunkSize);
+          
+            newC.initChunk();
+            newColumn.push(newC);      
+        }
+        
+        this.chunks.push(newColumn);
+        this.chunksX++;
+    }
+      
+    genExtraYChunk() {
+        const yLookup = this.chunks.map(row => row[row.length - 1]);
+        let swLookup;
+        
+        for (let j in yLookup) {
+            const chunk = yLookup[j];
+            const newC = new Chunk(
+                chunk.sw,
+                chunk.se,
+                (swLookup ? swLookup : this.rng()),
+                this.rng(),
+                this.chunkSize
+            );
+            
+            swLookup = newC.se;
+            newC.initChunk();
+            this.chunks[j].push(newC);
+        }
+        
+        this.chunksY++;
+    }
 };
 
 export default World;

@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <!-- <button id="X" onclick="world.genExtraXChunk()">X</button> -->
+        <!-- <button id="Y" onclick="world.genExtraYChunk()">Y</button> -->
+        <canvas id="world" height=3000 width=3000></canvas>
+
+
+        <div id="content">
+            <div id="chunk-gen-2">
+
+                <p><b>Chunk Generation</b></p>
+
+                <p><b>- generating neighbours -</b></p>
+                
+                <br><span>given a pre-generated chunk (e.g. on the left)</span>
+                <br><br><span style="color: #2988ae"><b>[2, <span style="color: #4D2DB7">4, 5, 7</span>, 8]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[4, 4, 5, 6, 7]</span></b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[5, 5, 5, 5, 6]</span></b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[7, 6, 5, 5, 5]</span></b></span>
+                <br><span style="color: #2988ae"><b>[8, <span style="color: #4D2DB7">7, 6, 5</span>, 5]</b></span>
+                <br><br><br><br>
+                <span style="color: #006600"><b>step 1.</b>Generating corners</span>
+                <br><span>Corners are also generated randomly (λ), expect on the ones adjacent to a pre-existing chunk, i.e.</span>
+                <br>
+                <br><span style="color: #2988ae"><b>[2, <span style="color: #4D2DB7">4, 5, 7</span>, 8]</b></span> -> <span style="color: #2988ae"><b>[<span style="color: #ffbf00">8</span>, _, _, _, <span style="color: #ffbf00">λ</span>]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[4, 4, 5, 6, 7]</span></b></span> -> <span style="color: #2988ae"><b>[_, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[5, 5, 5, 5, 6]</span></b></span> -> <span style="color: #2988ae"><b>[_, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[7, 6, 5, 5, 5]</span></b></span> -> <span style="color: #2988ae"><b>[_, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b>[8, <span style="color: #4D2DB7">7, 6, 5</span>, 5]</b></span> -> <span style="color: #2988ae"><b>[<span style="color: #ffbf00">5</span>, _, _, _, <span style="color: #ffbf00">λ</span>]</b></span>
+
+                <br><br><br><br>
+                <span style="color: #006600"><b>step 2.</b>Filling intermediate tiles</span>
+                <br><span>intermediate tiles are generated following the same algorithm</span>
+                <br><br><span>note: since the two "west" corners are the same as the adjacent chunk's, the first column is predictable</span>
+                <br><br><span style="color: #2988ae"><b>[2, <span style="color: #4D2DB7">4, 5, 7</span>, 8]</b></span> -> <span style="color: #2988ae"><b>[<span style="color: #ffbf00">8</span>, _, _, _, <span style="color: #ffbf00">λ</span>]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[4, 4, 5, 6, 7]</span></b></span> -> <span style="color: #2988ae"><b>[<span style="color: #099E00">7</span>, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[5, 5, 5, 5, 6]</span></b></span> -> <span style="color: #2988ae"><b>[<span style="color: #099E00">6</span>, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b><span style="color: #4D2DB7">[7, 6, 5, 5, 5]</span></b></span> -> <span style="color: #2988ae"><b>[<span style="color: #099E00">5</span>, _, _, _, _]</b></span>
+                <br><span style="color: #2988ae"><b>[8, <span style="color: #4D2DB7">7, 6, 5</span>, 5]</b></span> -> <span style="color: #2988ae"><b>[<span style="color: #ffbf00">5</span>, _, _, _, <span style="color: #ffbf00">λ</span>]</b></span>
+                <br><br><span>The same process is used when generating new chunks to the "south"</span>
+                <br><span>The top two coords (N-W & N-E) are copied from the chunk "above" (S-W & S-E respectively)</span>
+            </div>
+
+            <br><br><a href="/history/phase1/index.html">< back to phase I</a> - <a href="/history/phase2/index.html">go to phase III ></a>
+        </div>
+
+
+        <script type="module" src="main.js"></script>
+    </body>
+</html>
