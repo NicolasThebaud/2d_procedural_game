@@ -1,5 +1,18 @@
 # 2d_procedural_game
 
+
+Démo en ligne:
+- phase 1: génération d'un chunk unique
+> https://nicolasthebaud.github.io/2d_procedural_game/history/phase1/index.html
+- phase 2: génération de chunks voisins
+> https://nicolasthebaud.github.io/2d_procedural_game/history/phase2/index.html
+- phase 3: génération infinie de la map
+> https://nicolasthebaud.github.io/2d_procedural_game/history/phase3/index.html
+
+/!\ dev version (unstable)
+https://nicolasthebaud.github.io/2d_procedural_game/dev/index.html
+
+
 Informations générales:
 
 > Le Monde créé est vu du dessus (en 2D)
