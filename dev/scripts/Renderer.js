@@ -3,31 +3,12 @@ class Renderer {
         this.chunkSize = chunkSize;
         this.tileSize = tileSize;
         this.chunkResolution = chunkSize * tileSize;
-        this.colors = [
-            "#19729f",
-            "#2988ae",
-            "#309ec0",
-            "#28CC1F",
-            "#099e00",
-            "#008800",
-            "#006600",
-            "#A3927F",
-            "#8D7B68",
-            "#F5F5F5"
-        ];
+        this.colors = ["#156099", "#19729f", "#2988ae", "#309ec0", "#c2b26f", "#099e00", "#008800", "#006600", "#004400"];
     }
 
     registerCanvas(canvasObj) {
         this.canvasObj = canvasObj;
         this.ctx = canvasObj.getContext("2d");
-    }
-
-    /* updateSizes(chunkSize, tileSize, chunksX, chunksY) {
-        this.chunkSize = chunkSize;
-        this.tileSize = tileSize;
-        this.chunkResolution = chunkSize * tileSize;
-
-        this.updateWorldSize(chunksX, chunksY);
     }
 
     enableHeightmapDebug() {
@@ -41,7 +22,7 @@ class Renderer {
     updateWorldSize(width, height) {
         this.canvasObj.width = (width + 1) * this.chunkResolution;
         this.canvasObj.height = (height + 1) * this.chunkResolution;
-    } */
+    }
 
     scroll(direction) {
         const container = this.canvasObj.parentElement;

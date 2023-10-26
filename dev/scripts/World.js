@@ -1,6 +1,7 @@
 import Chunk from "./Chunk.js";
 
 class World {
+
     constructor(chunksX, chunksY, chunkSize) {
         this.chunksX = chunksX;
         this.chunksY = chunksY;
@@ -13,12 +14,7 @@ class World {
         this.renderer = instance;
     }
 
-    registerBiomeGenerator(instance) {
-        this.biomeGenerator = instance;
-    }
-
     generate() {
-        this.biomeGenerator.generate();
         // this.renderer.updateWorldSize(this.chunksX, this.chunksY);
 
         for (let i = 0; i < this.chunksY; i++) {
@@ -34,28 +30,56 @@ class World {
                     -1
                 ];
 
-                let corners = this.getRandomCorners(mask, this.biomeGenerator.getBiomeAt(i, j)); // generate corners that aren't lookups (-1)
+                let corners = this.getRandomCorners(mask); // generate corners that aren't lookups (-1)
                 
                 this.chunks[i][j] = (new Chunk(...corners, this.chunkSize)).initChunk();
-                this.renderer.renderSingleChunk(i, j, this.chunks[i][j]);
             }
         }
+        this.renderer.renderChunks(this.chunks);
     }
 
-    getRandomCorners(mask, biome) {
-        return mask.map(corner => corner > -1 ? corner : this.rng(biome.minH, biome.maxH));
+    
+
+    getRandomCorners(mask) {
+        return mask.map(corner => corner > -1 ? corner : this.rng());
     }
       
-    rng(min, max) {
-        return ~~(Math.random() * (max - (min - 1))) + min;
-        // return ~~(Math.random() * 9) + 1;
+    rng() {
+        return ~~(Math.random() * 9) + 1;
     }
 
-    genExtraXChunks() {
+    discover(i, j) {
+        this.chunks[i] = this.chunks[i] || [];
+
+        if (this.chunks[i][j]) {
+            return;
+        }
+
+        const [z, q, s, d] = [
+            (this.chunks[i - 1] || [])[j],
+            this.chunks[i][j - 1],
+            (this.chunks[i + 1] || [])[j],
+            this.chunks[i][j + 1]
+        ];
+        const newC = new Chunk(
+            q ? q.ne : z ? z.sw : this.rng(),
+            z ? z.se : d ? d.nw : this.rng(),
+            q ? q.se : s ? s.nw : this.rng(),
+            d ? d.sw : s ? s.ne : this.rng(),
+            this.chunkSize
+        );
+
+        newC.initChunk();
+        this.chunks[i][j] = newC;
+        console.warn(this.chunks[i][j]);
+        this.renderer.renderSingleChunk(i, j, newC);
+    }
+
+    /* genExtraXChunks() {
         const xLookup = this.chunks.map(row => row[row.length - 1]);
         let neLookup;
 
-        // this.renderer.updateWorldSize(this.chunksX + 1, this.chunksY);
+        this.renderer.updateWorldSize(this.chunksX + 1, this.chunksY);
 
         for (let j in xLookup) {
             const chunk = xLookup[j];
@@ -82,7 +106,7 @@ class World {
         const prevRow = this.chunks[this.chunksY - 1]; // last row
         let swLookup;
 
-        // this.renderer.updateWorldSize(this.chunksX, this.chunksY + 1);
+        this.renderer.updateWorldSize(this.chunksX, this.chunksY + 1);
 
         for (let i in prevRow) {
             const chunk = prevRow[i];
@@ -103,7 +127,7 @@ class World {
         this.chunksY++;
         this.renderer.renderChunks(this.chunks);
         // this.renderer.scroll(1); // scroll to the bottom
-    }
+    } */
 };
 
 export default World;

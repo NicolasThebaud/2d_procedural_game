@@ -5,11 +5,11 @@ import World from "./scripts/World.js";
 const canvasObj = document.getElementById("world");
 
 let chunkSize = 16;
-let tileSize = 12;
+let tileSize = 3;
 const chunkResolution = chunkSize * tileSize;
 
 const renderer = new Renderer(chunkSize, tileSize);
-const world = new World(4, 4, chunkSize);
+const world = new World(32, 18, chunkSize);
 
 renderer.registerCanvas(canvasObj);
 world.registerRenderer(renderer);

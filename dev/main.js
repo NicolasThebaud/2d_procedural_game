@@ -1,119 +1,68 @@
-import BiomeGenerator from "./scripts/BiomeGenerator.js";
 import Renderer from "./scripts/Renderer.js";
 import World from "./scripts/World.js";
+import Player from "./scripts/Player.js"
 
 
-// const canvasObj = document.getElementById("world");
-// const ctx = canvasObj.getContext("2d");
+const canvasObj = document.getElementById("world");
+const playerLayer = document.getElementById("player").getContext("2d");
 
 let chunkSize = 16;
-let tileSize = 3;
-let chunksX = 32;
-let chunksY = 18;
-
+let tileSize = 6;
 const chunkResolution = chunkSize * tileSize;
 
 const renderer = new Renderer(chunkSize, tileSize);
-const biomeGenerator = new BiomeGenerator(chunksX, chunksY);
+const world = new World(5, 5, chunkSize);
+const player = new Player(0, 0);
 
-renderer.registerCanvas(document.getElementById("world"));
-biomeGenerator.registerCanvas(document.getElementById("biomes"));
-// /**/ renderer.enableHeightmapDebug();
-// /**/ renderer.enableChunkDebug();
-
-const world = new World(chunksX, chunksY, chunkSize);
-
+renderer.registerCanvas(canvasObj);
 world.registerRenderer(renderer);
-world.registerBiomeGenerator(biomeGenerator);
 world.generate();
 
-// DEBUG
-// let [boxX, boxY] = [0, 0];
-
-/* document.addEventListener("mousemove", (e) => {
-    const arrow = document.querySelector("#arrow");
-    const arrow_down = document.querySelector("#arrow_down");
-
-    [boxX, boxY] = [
-        Math.floor(e.offsetX / chunkResolution),
-        Math.floor(e.offsetY / chunkResolution)
-    ];
-
-    arrow.style.opacity = 0;
-    arrow_down.style.opacity = 0;
-
-    if (boxX >= world.chunksX) {
-        let svg_ = arrow.querySelector("svg");
-        let {width, height} = svg_.getBoundingClientRect();
-
-        svg_.style.marginLeft = `${(chunkResolution - width) / 2}px`;
-        svg_.style.marginTop = `${(chunkResolution - height) / 2}px`;
-        
-        arrow.style.width = `${chunkResolution}px`;
-        arrow.style.height = `${chunkResolution}px`;
-        arrow.style.opacity = 1;
-        arrow.style.top = 0;
-        arrow.style.left = world.chunksX * chunkResolution;
-    } else if (boxY >= world.chunksY) {
-        let svg_down = arrow_down.querySelector("svg");
-        let {width, height} = svg_down.getBoundingClientRect();
-
-        svg_down.style.marginLeft = `${(chunkResolution - width) / 2}px`;
-        svg_down.style.marginTop = `${(chunkResolution - height) / 2}px`;
-        
-        arrow_down.style.width = `${chunkResolution}px`;
-        arrow_down.style.height = `${chunkResolution}px`;
-        arrow_down.style.opacity = 1;
-        arrow_down.style.top = world.chunksY * chunkResolution;
-        arrow_down.style.left = 0;
-    }
-});
-
-document.addEventListener("mouseup", (e) => {
-    e.stopPropagation();
-
-    if (boxX >= world.chunksX) {
-        world.genExtraXChunks();
-    } else if (boxY >= world.chunksY) {
-        world.genExtraYChunks();
-    }
-}); */
+const renderPlayer = (i, j) => {
+    playerLayer.clearRect(0, 0, 1920, 1080);
+    playerLayer.strokeStyle = "#D80032";
+    playerLayer.lineWidth = 4;
+    playerLayer.strokeRect(j * chunkResolution, i * chunkResolution, chunkResolution, chunkResolution);
+};
+renderPlayer(...player.getCoords());
 
 document.addEventListener("keyup", (e) => {
-    /* if (keyName === "PageUp") {
-        renderer.updateSizes(chunkSize, --tileSize, world.chunksX, world.chunksY);
-        renderer.renderChunks(world.chunks);
-    }
-    if (keyName === "PageDown") {
-        renderer.updateSizes(chunkSize, ++tileSize, world.chunksX, world.chunksY);
-        renderer.renderChunks(world.chunks);
-    } */
-
     const container = document.querySelector("#container");
+    const discoverNeighbours = (i, j) => {
+        world.discover(i, j);
+        world.discover(i - 1, j);
+        world.discover(i + 1, j);
+        world.discover(i, j - 1);
+        world.discover(i, j + 1);
+    };
 
     switch(e.key) {
         case "d": {
-            if(container.scrollLeft > (container.scrollWidth - container.offsetWidth)) {
-                world.genExtraXChunks();   
-            } else {
-                container.scrollTo(container.scrollLeft + (chunkResolution / 4), container.scrollTop);
-            }
+            player.right();
+            const coords = player.getCoords();
+            renderPlayer(...coords);
+            discoverNeighbours(...coords);
             break;
         }
         case "q": {
-            container.scrollTo(container.scrollLeft - (chunkResolution / 4), container.scrollTop);
+            player.left();
+            const coords = player.getCoords();
+            renderPlayer(...coords);
+            discoverNeighbours(...coords);
             break;
         }
         case "s": {
-            if(container.scrollTop > (container.scrollHeight - container.offsetHeight)) {
-                world.genExtraYChunks();   
-            } else {
-                container.scrollTo(container.scrollLeft, container.scrollTop + (chunkResolution / 4));
-            }
+            player.down();
+            const coords = player.getCoords();
+            renderPlayer(...coords);
+            discoverNeighbours(...coords);
             break;
         }
         case "z": {
-            container.scrollTo(container.scrollLeft, container.scrollTop - (chunkResolution / 4));
+            player.up();
+            const coords = player.getCoords();
+            renderPlayer(...coords);
+            discoverNeighbours(...coords);
             break;
         }
     }
